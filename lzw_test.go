@@ -24,7 +24,7 @@ import (
 )
 
 func compareToGolden(t *testing.T, b []byte, fileName string) {
-
+	t.Helper()
 	golden, err := os.Open(fileName)
 	if err != nil {
 		t.Errorf("%s: %v", fileName, err)
@@ -59,9 +59,8 @@ func compareToGolden(t *testing.T, b []byte, fileName string) {
 // testFile tests that encoding and subsequent decoding of a given file
 // yields byte streams that correspond to a golden file content at each stage.
 func testFile(t *testing.T, filePrefix string, earlyChange bool) {
-
+	t.Helper()
 	t.Logf("testFile: %s\n", filePrefix)
-
 	rawFileName := filePrefix + "Raw.lzw" // The golden file for decoded lzw.
 	encFileName := filePrefix + "Enc.lzw" // The golden file for encoded lzw.
 
@@ -138,9 +137,9 @@ func TestLZW(t *testing.T) {
 		fileNamePrefix string
 		earlyChange    bool
 	}{
-		{"testdata/earlyChange0", false},      // extracted from pdfcpu/testdata/Paclitaxel.pdf
-		{"testdata/earlyChange1", true},       // extracted from pdfcpu/testdata/T6.pdf
-		{"testdata/earlyChangeDefault", true}, // extracted from pdfcpu/testdata/ProgrammingInJava.pdf
+		{"testdata/earlyChange0", false},
+		{"testdata/earlyChange1", true},
+		{"testdata/earlyChangeDefault", true},
 	} {
 		testFile(t, tt.fileNamePrefix, tt.earlyChange)
 	}

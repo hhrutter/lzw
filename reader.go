@@ -39,10 +39,7 @@ type decoder struct {
 	// The next two codes mean clear and EOF.
 	// Other valid codes are in the range [lo, hi] where lo := clear + 2,
 	// with the upper bound incrementing on each code seen.
-	//
-	// overflow is the code at which hi overflows the code width. It always
-	// equals 1 << width.
-	//
+	// overflow is the code at which hi overflows the code width. NOTE: TIFF's LZW is "off by one".
 	// last is the most recently seen code, or decoderInvalidCode.
 	//
 	// An invariant is that
@@ -136,9 +133,6 @@ loop:
 			// Some PDF Writers write an EOD some don't.
 			// Don't insist on EOD marker.
 			// Don't return an unexpected EOF error.
-			// if err == io.EOF {
-			// 	err = io.ErrUnexpectedEOF
-			// }
 			d.err = err
 			break
 		}
